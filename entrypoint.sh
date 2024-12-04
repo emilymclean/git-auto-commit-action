@@ -38,22 +38,12 @@ _main() {
         _switch_to_branch
 
         _add_files
+        
+        _local_commit
 
-        # Check dirty state of repo again using git-diff.
-        # (git-diff detects better if CRLF of files changes and does NOT
-        # proceed, if only CRLF changes are detected. See #241 and #265
-        # for more details.)
-        if [ -n "$(git diff --staged)" ] || "$INPUT_SKIP_DIRTY_CHECK"; then
-            _local_commit
+        _tag_commit
 
-            _tag_commit
-
-            _push_to_github
-        else
-            _set_github_output "changes_detected" "false"
-
-            echo "Working tree clean. Nothing to commit.";
-        fi
+        _push_to_github
     else
         _set_github_output "changes_detected" "false"
 
